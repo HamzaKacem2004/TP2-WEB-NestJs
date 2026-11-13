@@ -25,12 +25,10 @@ export class Cv {
   @Column({ nullable: true })
   path: string;
 
-  // RELATION 1 : Un CV appartient à UN SEUL User (ManyToOne)
   @ManyToOne(() => User, { eager: true, onDelete: 'CASCADE' })
   user: User;
 
-  // RELATION 2 : Un CV possède PLUSIEURS Skills (ManyToMany)
   @ManyToMany(() => Skill, { eager: true })
-  @JoinTable() // OBLIGATOIRE pour le ManyToMany
+  @JoinTable()
   skills: Skill[];
 }

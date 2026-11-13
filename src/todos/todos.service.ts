@@ -16,7 +16,6 @@ export class TodosService {
   private todos: Todo[] = [];
   private nextId = 1;
 
-  // Ajouter un Todo
   create(title: string, userId: string): Todo {
     const todo: Todo = {
       id: this.nextId++,
@@ -29,14 +28,12 @@ export class TodosService {
     return todo;
   }
 
-  // Récupérer les Todo d'un utilisateur
   findAll(userId: string): Todo[] {
     return this.todos.filter(
       (todo) => todo.userId === userId,
     );
   }
 
-  // Modifier un Todo
   update(
     id: number,
     title: string,
@@ -62,7 +59,6 @@ export class TodosService {
     return todo;
   }
 
-  // Supprimer un Todo
   remove(id: number, userId: string): void {
 
     const index = this.todos.findIndex(

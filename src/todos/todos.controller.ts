@@ -20,7 +20,6 @@ export class TodosController {
     private readonly todosService: TodosService,
   ) {}
 
-  // Ajouter un Todo
   @Post()
   create(
     @Body() body: { title: string },
@@ -32,7 +31,6 @@ export class TodosController {
     );
   }
 
-  // Récupérer les Todo de l'utilisateur connecté
   @Get()
   findAll(
     @Req() req: AuthenticatedRequest,
@@ -42,7 +40,6 @@ export class TodosController {
     );
   }
 
-  // Modifier un Todo
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -56,7 +53,6 @@ export class TodosController {
     );
   }
 
-  // Supprimer un Todo
   @Delete(':id')
   remove(
     @Param('id', ParseIntPipe) id: number,

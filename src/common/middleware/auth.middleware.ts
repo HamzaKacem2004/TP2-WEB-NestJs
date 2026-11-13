@@ -22,10 +22,8 @@ export class AuthMiddleware implements NestMiddleware {
 
     const authReq = req as AuthenticatedRequest;
 
-    // 1. Récupérer le token depuis le header
     const token = authReq.header('auth-user');
 
-    // 2. Vérifier que le token existe
     if (!token) {
       res.status(401).json({
         message: 'Accès refusé : token manquant',
@@ -34,12 +32,10 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     try {
-      // 3. Vérifier la signature et décoder le token
       const decoded = jwt.verify(token, JWT_SECRET, {
         algorithms: ['HS256'],
       });
 
-      // 4. Vérifier que le payload est un objet
       if (
         typeof decoded === 'string' ||
         !decoded.userId
@@ -50,10 +46,8 @@ export class AuthMiddleware implements NestMiddleware {
         return;
       }
 
-      // 5. Injecter userId dans la requête
       authReq.userId = String(decoded.userId);
 
-      // 6. Continuer vers le contrôleur
       next();
 
     } catch (error) {
