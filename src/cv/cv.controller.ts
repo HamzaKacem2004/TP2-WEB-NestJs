@@ -29,9 +29,10 @@ export class CvController {
     return this.cvService.create(createCvDto, user);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.cvService.findAll();
+  findAll(@User() user: ConnectedUser) {
+    return this.cvService.findAll(user);
   }
 
   @Get(':id')

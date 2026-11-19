@@ -10,6 +10,7 @@ import { Cv } from './entities/cv.entity';
 import { CreateCvDto } from './dto/create-cv.dto';
 import { UpdateCvDto } from './dto/update-cv.dto';
 import { ConnectedUser } from '../auth/interfaces/jwt-payload.interface';
+import { Role } from '../auth/enums/role.enum';
 
 @Injectable()
 export class CvService {
@@ -26,8 +27,11 @@ export class CvService {
     return this.cvRepository.save(cv);
   }
 
-  findAll() {
-    return this.cvRepository.find();
+  findAll(user: ConnectedUser) {
+    if (user.role === Role.ADMIN) {
+      return this.cvRepository.find();
+    }
+    return this.cvRepository.find({ where: { user: { id: user.id } } });
   }
 
   async findOne(id: number) {
