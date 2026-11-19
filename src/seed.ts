@@ -6,6 +6,8 @@ import { User } from './user/entities/user.entity';
 import { Skill } from './skill/entities/skill.entity';
 import { Cv } from './cv/entities/cv.entity';
 import { randEmail, randFirstName, randLastName, randUserName, randNumber } from '@ngneat/falso';
+import { hash } from 'bcryptjs';
+import { Role } from './auth/enums/role.enum';
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -15,6 +17,7 @@ async function bootstrap() {
   const cvRepository = app.get<Repository<Cv>>(getRepositoryToken(Cv));
 
   await cvRepository.query('SET FOREIGN_KEY_CHECKS = 0;');
+  await cvRepository.query('TRUNCATE TABLE cv_skills_skill;');
   await cvRepository.clear();
   await userRepository.clear();
   await skillRepository.clear();
@@ -25,13 +28,22 @@ async function bootstrap() {
   const skill3 = await skillRepository.save({ designation: 'MySQL' });
   const skillsDisponibles = [skill1, skill2, skill3];
 
+  const hashedPassword = await hash('password123', 10);
+
+  await userRepository.save({
+    username: 'admin',
+    email: 'admin@gestion-cv.com',
+    password: await hash('admin123', 10),
+    role: Role.ADMIN,
+  });
+
   console.log('⏳ Création de 10 utilisateurs et de leurs CVs en cours...');
 
   for (let i = 0; i < 10; i++) {
     const user = await userRepository.save({
       username: randUserName(),
       email: randEmail(),
-      password: 'password123',
+      password: hashedPassword,
     });
 
     await cvRepository.save({
@@ -41,7 +53,7 @@ async function bootstrap() {
       cin: `CIN-${i}`,
       job: 'Développeur FullStack',
       path: 'uploads/cv.pdf',
-      user: user, 
+      user: user,
       skills: skillsDisponibles,
     });
   }
