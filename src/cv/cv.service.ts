@@ -56,7 +56,7 @@ export class CvService {
 
   private async findOwnedCv(id: number, user: ConnectedUser) {
     const cv = await this.findOne(id);
-    if (cv.user?.id !== user.id) {
+    if (cv.user.id !== user.id) {
       throw new ForbiddenException('You can only modify your own cvs');
     }
     return cv;
