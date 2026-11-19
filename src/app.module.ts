@@ -5,6 +5,7 @@ import { TodoModule } from './todo/todo.module';
 import { UserModule } from './user/user.module';
 import { SkillModule } from './skill/skill.module';
 import { CvModule } from './cv/cv.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { CvModule } from './cv/cv.module';
     TodoModule,
     UserModule,
     SkillModule,
-    CvModule, 
+    CvModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
