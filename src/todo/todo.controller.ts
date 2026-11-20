@@ -1,13 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Auth } from '../auth/decorators/auth.decorator';
 import { User } from '../auth/decorators/user.decorator';
 import type { ConnectedUser } from '../auth/interfaces/jwt-payload.interface';
 
 @Controller('todo')
-@UseGuards(JwtAuthGuard)
+@Auth()
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
