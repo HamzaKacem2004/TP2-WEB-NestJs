@@ -8,8 +8,6 @@ import {
   Patch,
   Post,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,7 +20,6 @@ import { Role } from '../auth/enums/role.enum';
 @Controller('user')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Role.ADMIN)
-@UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

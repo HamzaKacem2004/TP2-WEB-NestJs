@@ -8,8 +8,6 @@ import {
   Patch,
   Post,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { CvService } from './cv.service';
 import { CreateCvDto } from './dto/create-cv.dto';
@@ -19,7 +17,6 @@ import { User } from '../auth/decorators/user.decorator';
 import type { ConnectedUser } from '../auth/interfaces/jwt-payload.interface';
 
 @Controller('cv')
-@UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class CvController {
   constructor(private readonly cvService: CvService) {}
 

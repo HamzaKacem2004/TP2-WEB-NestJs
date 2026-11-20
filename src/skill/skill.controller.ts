@@ -8,8 +8,6 @@ import {
   Patch,
   Post,
   UseGuards,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { SkillService } from './skill.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
@@ -20,7 +18,6 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from '../auth/enums/role.enum';
 
 @Controller('skill')
-@UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
 export class SkillController {
   constructor(private readonly skillService: SkillService) {}
 
