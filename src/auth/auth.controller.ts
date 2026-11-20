@@ -1,12 +1,11 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
-import type { Request } from 'express';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { RolesGuard } from './guards/roles.guard';
-import { Roles } from './decorators/roles.decorator';
+import { Auth } from './decorators/auth.decorator';
+import { User } from './decorators/user.decorator';
 import { Role } from './enums/role.enum';
+import type { ConnectedUser } from './interfaces/jwt-payload.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -23,16 +22,15 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Auth()
   @Get('profile')
-  profile(@Req() req: Request) {
-    return req.user;
+  profile(@User() user: ConnectedUser) {
+    return user;
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Auth(Role.ADMIN)
   @Get('admin')
-  adminOnly(@Req() req: Request) {
-    return { message: 'Welcome admin', user: req.user };
+  adminOnly(@User() user: ConnectedUser) {
+    return { message: 'Welcome admin', user };
   }
 }
